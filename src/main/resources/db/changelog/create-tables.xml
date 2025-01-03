@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Создание таблицы User -->
+    <changeSet author="author" id="1">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_name" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="password" type="VARCHAR(3000)" />
+            <column name="bio" type="TEXT" />
+            <column name="created_date" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Создание таблицы user_role -->
+    <changeSet author="author" id="2">
+        <createTable tableName="user_role">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Внешний ключ для user_role -->
+    <changeSet author="author" id="3">
+        <addForeignKeyConstraint
+                baseTableName="user_role"
+                baseColumnNames="user_id"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_user_role_user" />
+    </changeSet>
+
+    <!-- Создание таблицы Post -->
+    <changeSet author="author" id="4">
+        <createTable tableName="post">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="caption" type="VARCHAR(255)" />
+            <column name="location" type="VARCHAR(255)" />
+            <column name="likes" type="INT" />
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_date" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Внешний ключ для Post -->
+    <changeSet author="author" id="5">
+        <addForeignKeyConstraint
+                baseTableName="post"
+                baseColumnNames="user_id"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_post_user" />
+    </changeSet>
+
+    <!-- Создание таблицы Comment -->
+    <changeSet author="author" id="6">
+        <createTable tableName="comment">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="post_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="message" type="TEXT" />
+            <column name="created_date" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Внешний ключ для Comment -->
+    <changeSet author="author" id="7">
+        <addForeignKeyConstraint
+                baseTableName="comment"
+                baseColumnNames="post_id"
+                referencedTableName="post"
+                referencedColumnNames="id"
+                constraintName="fk_comment_post" />
+    </changeSet>
+
+    <!-- Создание таблицы ImageModel -->
+    <changeSet author="author" id="8">
+        <createTable tableName="image_model">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="image_bytes" type="LONGBLOB" />
+            <column name="user_id" type="BIGINT" />
+            <column name="post_id" type="BIGINT" />
+        </createTable>
+    </changeSet>
+
+    <!-- Внешний ключ для ImageModel (user_id) -->
+    <changeSet author="author" id="9">
+        <addForeignKeyConstraint
+                baseTableName="image_model"
+                baseColumnNames="user_id"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_image_user" />
+    </changeSet>
+
+    <!-- Внешний ключ для ImageModel (post_id) -->
+    <changeSet author="author" id="10">
+        <addForeignKeyConstraint
+                baseTableName="image_model"
+                baseColumnNames="post_id"
+                referencedTableName="post"
+                referencedColumnNames="id"
+                constraintName="fk_image_post" />
+    </changeSet>
+</databaseChangeLog>
