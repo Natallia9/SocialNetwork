@@ -1,4 +1,4 @@
-package com.example.socialnetwork.service;
+package com.example.socialnetwork.service.helper;
 
 import com.example.socialnetwork.entity.User;
 import com.example.socialnetwork.repository.UserRepository;

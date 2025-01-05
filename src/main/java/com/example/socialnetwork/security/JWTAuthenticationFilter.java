@@ -1,7 +1,7 @@
 package com.example.socialnetwork.security;
 
 import com.example.socialnetwork.entity.User;
-import com.example.socialnetwork.service.CustomUserDetailsService;
+import com.example.socialnetwork.service.helper.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
