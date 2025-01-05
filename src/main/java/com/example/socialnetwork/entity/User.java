@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -36,7 +38,7 @@ public class User implements UserDetails {
     private Set<ERole> roles = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
-    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
@@ -45,6 +47,13 @@ public class User implements UserDetails {
 
     public User(){
 
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
     }
 
     public User(Long id, String userName, String email, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -68,7 +77,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+
+        return userName;
     }
 
     @Override

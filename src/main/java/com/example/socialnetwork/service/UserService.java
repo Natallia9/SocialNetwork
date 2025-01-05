@@ -48,7 +48,7 @@ public class UserService {
         User user = userHelperService.getUserByPrincipal(principal);
         user.setFirstName(userDTO.getFirstname());
         user.setLastName(userDTO.getLastname());
-        user.setBio(user.getBio());
+        user.setBio(userDTO.getBio());
 
         return userRepository.save(user);
     }

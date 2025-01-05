@@ -21,8 +21,12 @@ public class Post {
     private String location;
     private Integer likes;
 
-    @Column
-    @ElementCollection(targetClass = String.class)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "post_liked_users",
+            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
     private Set<User> likedUsers = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
