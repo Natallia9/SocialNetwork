@@ -10,6 +10,7 @@ import com.example.socialnetwork.service.helper.UserHelperService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +55,13 @@ public class UserService {
     }
 
     public User getCurrentUser(Principal principal){
+
         return userHelperService.getUserByPrincipal(principal);
     }
 
+    public User getUserById(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
 }
