@@ -12,20 +12,24 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
+
     @Column(nullable = false)
-    private String userName;
+    private String username;
+
     @Column(nullable = false)
     private Long userId;
+
     @Column(columnDefinition = "text", nullable = false)
     private String message;
+
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdDate = LocalDateTime.now();
     }
 }
-

@@ -31,7 +31,7 @@ public class UserService {
         user.setEmail(userIn.getEmail());
         user.setFirstName(userIn.getFirstname());
         user.setLastName(userIn.getLastname());
-        user.setUserName(userIn.getUsername());
+        user.setUsername(userIn.getUsername());
         user.setPassword(passwordEncoder.encode(userIn.getPassword()));
         user.getRoles().add(ERole.ROLE_USER);
 
@@ -47,8 +47,8 @@ public class UserService {
     public User updateUser(UserDTO userDTO, Principal principal){
 
         User user = userHelperService.getUserByPrincipal(principal);
-        user.setFirstName(userDTO.getFirstname());
-        user.setLastName(userDTO.getLastname());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
         user.setBio(userDTO.getBio());
 
         return userRepository.save(user);

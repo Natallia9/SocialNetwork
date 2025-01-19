@@ -73,7 +73,7 @@ public class PostService {
             post.setLikes(post.getLikes() - 1);
             post.getLikedUsers().remove(userLiked.get());
         } else {
-            User user = userRepository.findUserByUserName(username)
+            User user = userRepository.findUserByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with username " + username));
             post.setLikes(post.getLikes() + 1);
             post.getLikedUsers().add(user);

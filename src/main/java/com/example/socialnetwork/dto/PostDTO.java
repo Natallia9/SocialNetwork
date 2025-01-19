@@ -6,7 +6,6 @@ import java.util.Set;
 
 @Data
 public class PostDTO {
-
     private Long id;
     private String title;
     private String caption;
@@ -14,5 +13,4 @@ public class PostDTO {
     private String username;
     private Integer likes;
     private Set<String> usersLiked;
-
 }

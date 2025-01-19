@@ -4,6 +4,8 @@ import com.example.socialnetwork.entity.enums.ERole;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,30 +16,39 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
-    @Column(unique = true, updatable = false)
-    private String userName;
-    @Column(unique = true)
+
+    @Column(unique = true, updatable = false, nullable = false)
+    private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
-    @Column(length = 3000)
+
+    @Column(nullable = false, length = 3000)
     private String password;
+
     @Column(columnDefinition = "text")
     private String bio;
 
-    @ElementCollection(targetClass = ERole.class)
-    @CollectionTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(targetClass = ERole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     private Set<ERole> roles = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(updatable = false)
     private LocalDateTime createdDate;
@@ -45,8 +56,9 @@ public class User implements UserDetails {
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
-    public User(){
-
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
     }
 
     @Override
@@ -56,49 +68,49 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public User(Long id, String userName, String email, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.authorities = authorities;
-    }
-
-    @PrePersist
-    protected void onCreate(){
-
-        this.createdDate = LocalDateTime.now();
-    }
-
     @Override
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
     @Override
     public String getUsername() {
-
-        return userName;
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
+    }
+
+    public User(Long id, String username, String email, String password, Set<ERole> roles) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(Long id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
     }
 }
-

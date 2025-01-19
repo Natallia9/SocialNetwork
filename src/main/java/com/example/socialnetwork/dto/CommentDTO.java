@@ -7,8 +7,9 @@ import lombok.Data;
 public class CommentDTO {
 
     private Long id;
+
     @NotEmpty
     private String message;
-    private String username;
 
+    private String username;
 }

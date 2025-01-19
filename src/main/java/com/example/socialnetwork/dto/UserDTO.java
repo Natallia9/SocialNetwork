@@ -1,19 +1,26 @@
 package com.example.socialnetwork.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     private Long id;
+
     @NotEmpty
-    private String firstname;
+    private String firstName;
+
     @NotEmpty
-    private String lastname;
+    private String lastName;
+
     @NotEmpty
     private String username;
-    private String bio;
 
+    private String bio;
 
 }

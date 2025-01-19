@@ -2,7 +2,6 @@ package com.example.socialnetwork.service.helper;
 
 import com.example.socialnetwork.entity.User;
 import com.example.socialnetwork.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class UserHelperService {
 
     public User getUserByPrincipal(Principal principal) {
         String username = principal.getName();
-        return userRepository.findUserByUserName(username)
+        return userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found with username " + username));
     }
 }
