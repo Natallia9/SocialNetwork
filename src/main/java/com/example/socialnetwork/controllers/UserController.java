@@ -52,5 +52,6 @@ public class UserController {
         UserDTO userUpdate = userMapper.toDto(user);
 
         return new ResponseEntity<>(userUpdate, HttpStatus.OK);
+
     }
 }

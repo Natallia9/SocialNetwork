@@ -21,4 +21,5 @@ public class LiquibaseConfig {
         liquibase.setDropFirst(true);
         return liquibase;
     }
+
 }
